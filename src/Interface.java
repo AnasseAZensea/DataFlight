@@ -31,21 +31,9 @@ public class Interface extends Application {
         camera.setFieldOfView(35);   // Champ de vision
         scene.setCamera(camera);
 
-        // Gestion du zoom avec la souris
-        scene.addEventHandler(MouseEvent.ANY, event -> {
-            if (event.getEventType() == MouseEvent.MOUSE_PRESSED) {
-                mousePosY = event.getSceneY(); // Capture de la position initiale de la souris
-            }
-            if (event.getEventType() == MouseEvent.MOUSE_DRAGGED) {
-                double deltaY = event.getSceneY() - mousePosY; // Calcul du déplacement sur l'axe Y
-                camera.setTranslateZ(camera.getTranslateZ() + deltaY * 0.1); // Mise à jour de la position de la caméra
-                mousePosY = event.getSceneY(); // Mise à jour de la position actuelle de la souris
-            }
-        });
-
-        // Gestion du clic droit pour afficher les coordonnées et l'aéroport le plus proche
+        // Gestion des clics sur la Terre
         scene.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            if (event.getButton() == MouseButton.SECONDARY) { // Vérifier si c'est un clic droit
+            if (event.getButton() == MouseButton.SECONDARY) { // Clic droit
                 PickResult pickResult = event.getPickResult();
                 if (pickResult.getIntersectedNode() != null) {
                     Point2D click = pickResult.getIntersectedTexCoord();
@@ -58,7 +46,17 @@ public class Interface extends Application {
                         Aeroport nearestAirport = world.findNearest(longitude, latitude);
                         if (nearestAirport != null) {
                             System.out.println("Aéroport le plus proche : " + nearestAirport);
-                            earth.displayRedSphere(nearestAirport); // Afficher une sphère rouge
+                            earth.displayRedSphere(nearestAirport); // Affiche une sphère rouge
+
+                            // Création d'une URL dynamique en fonction de l'aéroport
+                            String apiUrl = "http://api.aviationstack.com/v1/flights?access_key=5baf16ec3b0516ba36fc8c2b17cfd7ac&arr_iata=" + nearestAirport.getIATA();
+
+                            // Création d'une instance de HTTPSRunnable
+                            HTTPSRunnable runnable = new HTTPSRunnable(apiUrl, earth, world);
+
+                            // Création d'un thread qui va exécuter la requête API
+                            Thread thread = new Thread(runnable);
+                            thread.start(); // Lancement du thread
                         }
                     }
                 }
@@ -67,8 +65,6 @@ public class Interface extends Application {
 
         // Associer la scène au stage
         primaryStage.setScene(scene);
-
-        // Afficher la fenêtre
         primaryStage.show();
     }
 

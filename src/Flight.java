@@ -1,73 +1,47 @@
-import java.util.HashMap;
+import java.time.LocalDateTime;
 
 public class Flight {
-    private String flightDate;
-    private String flightStatus;
-    private String departureAirport;
-    private String arrivalAirport;
-    private String airline;
-    private String flightNumber;
-    private String aircraft;
-    private HashMap<String, Object> liveData; // Données live (latitude, longitude, altitude, etc.)
+    private String airLineCode;
+    private String airLineName;
 
-    // Constructeur complet
-    public Flight(String flightDate, String flightStatus, String departureAirport,
-                  String arrivalAirport, String airline, String flightNumber,
-                  String aircraft, HashMap<String, Object> liveData) {
-        this.flightDate = flightDate;
-        this.flightStatus = flightStatus;
-        this.departureAirport = departureAirport;
-        this.arrivalAirport = arrivalAirport;
-        this.airline = airline;
-        this.flightNumber = flightNumber;
-        this.aircraft = aircraft;
-        this.liveData = liveData;
+    // les dates et temps d'arrivée et départ sont en format LocalDateTime
+    private LocalDateTime arrivalTime;
+    private LocalDateTime departureTime;
+    private int number; //le numéro du vol
+
+    private Aeroport arrival; //l'aéroport d'arrivé du vol
+
+    private Aeroport departure; //l'aéroport de départ du vol
+
+
+    //constructeur
+    public Flight(String airLineCode, String airLineName, LocalDateTime arrivalTime, LocalDateTime departureTime, int number, Aeroport arrival, Aeroport departure) {
+        this.airLineCode = airLineCode;
+        this.airLineName = airLineName;
+        this.arrivalTime = arrivalTime;
+        this.departureTime = departureTime;
+        this.number = number;
+        this.arrival = arrival;
+        this.departure = departure;
     }
 
-    // Getters
-    public String getFlightDate() {
-        return flightDate;
+    //Getters
+    public Aeroport getArrival() {
+        return arrival;
     }
 
-    public String getFlightStatus() {
-        return flightStatus;
-    }
-
-    public String getDepartureAirport() {
-        return departureAirport;
-    }
-
-    public String getArrivalAirport() {
-        return arrivalAirport;
-    }
-
-    public String getAirline() {
-        return airline;
-    }
-
-    public String getFlightNumber() {
-        return flightNumber;
-    }
-
-    public String getAircraft() {
-        return aircraft;
-    }
-
-    public HashMap<String, Object> getLiveData() {
-        return liveData;
+    public Aeroport getDeparture() {
+        return departure;
     }
 
     @Override
     public String toString() {
         return "Flight{" +
-                "flightDate='" + flightDate + '\'' +
-                ", flightStatus='" + flightStatus + '\'' +
-                ", departureAirport='" + departureAirport + '\'' +
-                ", arrivalAirport='" + arrivalAirport + '\'' +
-                ", airline='" + airline + '\'' +
-                ", flightNumber='" + flightNumber + '\'' +
-                ", aircraft='" + aircraft + '\'' +
-                ", liveData=" + liveData +
+                "airLineCode='" + airLineCode + '\'' +
+                ", airLineName='" + airLineName + '\'' +
+                ", arrivalTime=" + arrivalTime +
+                ", departureTime=" + departureTime +
+                ", number=" + number +
                 '}';
     }
 }
