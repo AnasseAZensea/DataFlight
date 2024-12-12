@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Translate;
 
 public class Earth extends Group {
     private Sphere sph; // La sphère principale (Terre)
@@ -24,7 +25,7 @@ public class Earth extends Group {
 
         // Ajouter une rotation autour de l'axe Y
         ry = new Rotate(0, Rotate.Y_AXIS);
-        sph.getTransforms().add(ry);
+        this.getTransforms().add(ry);
 
         // Animation pour faire tourner la Terre
         AnimationTimer animationTimer = new AnimationTimer() {
@@ -47,14 +48,21 @@ public class Earth extends Group {
         sphere.setMaterial(col);
 
         // Positionner la sphère en fonction de la latitude et de la longitude
-        double x = -sph.getRadius() * Math.cos(Math.toRadians(a.getLatitude())) * Math.sin(Math.toRadians(a.getLongitude()));
+        /*double x = -sph.getRadius() * Math.cos(Math.toRadians(a.getLatitude())) * Math.sin(Math.toRadians(a.getLongitude()));
         double y = -sph.getRadius() * Math.sin(Math.toRadians(a.getLatitude()));
         double z = sph.getRadius() * Math.cos(Math.toRadians(a.getLatitude())) * Math.cos(Math.toRadians(a.getLongitude()));
 
         sphere.setTranslateX(x);
         sphere.setTranslateY(y);
         sphere.setTranslateZ(z);
-
+*/
+        sphere.setTranslateZ(-sph.getRadius());
+      //  Rotate rotate = new Rotate(45, -sphere.getTranslateX(), -sphere.getTranslateY(), -sphere.getTranslateZ(),Rotate.Y_AXIS);
+        Rotate rotate = new Rotate(-a.getLongitude(), 0, 0, 300,Rotate.Y_AXIS);
+        sphere.getTransforms().add(rotate);
+        Rotate rotate2 = new Rotate(-a.getLatitude()*2.0/3.0, -sphere.getTranslateX(),
+                -sphere.getTranslateY(),-sphere.getTranslateZ(),Rotate.X_AXIS);
+        sphere.getTransforms().add(rotate2);
         return sphere;
     }
 
